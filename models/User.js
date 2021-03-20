@@ -4,7 +4,7 @@ const mongoosePaginate = require('mongoose-paginate-v2')
 
 const userSchema = new Schema({
     name: { type: String, required: true },
-    username: { type: String, required: true, index: true, unique: true },
+    username: { type: String, required: true, index: true },
     password: { type: String, required: true, select: false },
 }, { timestamps: true, versionKey: false })
 

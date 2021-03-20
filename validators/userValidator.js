@@ -1,5 +1,5 @@
 const { body } = require("express-validator");
-// const User = require("../models/User");s
+// const User = require("../models/User");
 
 const userValidator = {
     name: body('name')
@@ -32,4 +32,8 @@ const userValidator = {
         .custom((confirmPassword, { req }) => confirmPassword !== req.body.password).withMessage('confirm password doesn\'t match')
 }
 
-module.exports = userValidator
+module.exports = {
+    create: [userValidator.name, userValidator.username, userValidator.password, userValidator.confirmPassword],
+    edit: [userValidator.name, userValidator.username],
+    editPassword: [userValidator.oldPassword, userValidator.password, userValidator.confirmPassword]
+}

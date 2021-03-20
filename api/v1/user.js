@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const { validationResult } = require('express-validator')
-const { name, username, password, confirmPassword, oldPassword } = require('../../validators/userValidator')
+const { create, edit } = require('../../validators/userValidator')
 
 const User = require('../../models/User')
 
@@ -86,7 +86,7 @@ router.get('/:id', (req, res) => {
 * @apiParam {string} password : user's password
 * @apiParam {string} confirmPassword : confirm password
 */
-router.post('/', [name, username, password, confirmPassword], async (req, res) => {
+router.post('/', create, async (req, res) => {
     try {
         // if validation failed
         let errors = validationResult(req)
@@ -135,7 +135,7 @@ router.post('/', [name, username, password, confirmPassword], async (req, res) =
 * @apiParam {string} name : user's name
 * @apiParam {string} username : user's username
 */
-router.patch('/:id', [name, username], async (req, res) => {
+router.patch('/:id', edit, async (req, res) => {
     try {
         // if validation failed
         let errors = validationResult(req)
@@ -183,7 +183,7 @@ router.patch('/:id', [name, username], async (req, res) => {
 * @apiParam {string} password : user's password
 * @apiParam {string} confirmPassword : confirm password
 */
-router.patch('/:id/password', [oldPassword, password, confirmPassword], async (req, res) => {
+router.patch('/:id/password', editPassword, async (req, res) => {
     try {
         let id = req.params.id
         User.findByIdAndUpdate(id, {
@@ -225,7 +225,7 @@ router.delete('/:id', (req, res) => {
                 res.status(200).json({
                     status: true,
                     message: "success delete user!",
-                    data: await User.findByIdAndRemove(id)
+                    data: await User.findByIdAndRemove(id).select('-password')
                 })
             } else {
                 res.status(200).json({
