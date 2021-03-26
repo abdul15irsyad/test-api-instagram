@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const { validationResult } = require('express-validator')
-const { create, edit } = require('../../validators/userValidator')
+const { create, edit, editPassword } = require('../../validators/userValidator')
 
 const User = require('../../models/User')
 

@@ -1,7 +1,6 @@
 const { body } = require("express-validator");
-// const User = require("../models/User");
 
-const userValidator = {
+const validators = {
     name: body('name')
         .notEmpty().withMessage('name is required'),
     age: body('age')
@@ -13,18 +12,9 @@ const userValidator = {
     email: body('email')
         .notEmpty().withMessage('email is required')
         .isEmail().withMessage('email not valid'),
-    // .custom((email, { req }) => {
-    //     return User.findOne({
-    //         $and: [{ email }, { email: { $ne: req.header('old-email') } }]
-    //     }).then(user => {
-    //         if (user) {
-    //             return Promise.reject('email already used');
-    //         }
-    //     })
-    // }),
     oldPassword: body('oldPassword')
         .notEmpty().withMessage('old password is required'),
-    password: body('password')
+    newPassword: body('password')
         .notEmpty().withMessage('password is required')
         .isLength({ min: 8 }).withMessage('password must be at least 8 characters')
         .matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])./).withMessage('password must contain lowercase, uppercase, and number'),
@@ -33,7 +23,7 @@ const userValidator = {
 }
 
 module.exports = {
-    create: [userValidator.name, userValidator.username, userValidator.password, userValidator.confirmPassword],
-    edit: [userValidator.name, userValidator.username],
-    editPassword: [userValidator.oldPassword, userValidator.password, userValidator.confirmPassword]
+    create: [validators.name, validators.age, validators.username, validators.email],
+    edit: [validators.name, validators.username],
+    editPassword: [validators.oldPassword, validators.newPassword, validators.confirmPassword]
 }

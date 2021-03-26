@@ -4,18 +4,17 @@ require('dotenv').config()
 require('./config/mongodb')
 
 const api = require('./api')
+const routers = require('./routers')
+const port = process.env.PORT || 3000
 
+app.set('view engine', 'pug')
+app.set('views', './views')
+
+app.use('/', express.static('public'))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const port = process.env.PORT || 3000
-
-app.get('/', (req, res) => {
-    res.status(200).json({
-        message: 'welcome to my simple rest api'
-    })
-})
-
 app.use('/api', api)
+app.use('/', routers)
 
 app.listen(port, () => console.log(`server running on port ${port}`))
